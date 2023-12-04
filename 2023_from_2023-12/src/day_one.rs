@@ -16,7 +16,8 @@ pub fn filter_strings(contents: String) -> Vec<u32> {
     let mut results: Vec<u32> = Vec::new();
 
     for line in contents.lines() {
-        let result = remove_letters(line);
+        let line = change_words(line);
+        let result = remove_letters(&line);
         let result = modify_numbers(&result);
 
         let number: u32 = match result.trim().parse() {
@@ -28,6 +29,19 @@ pub fn filter_strings(contents: String) -> Vec<u32> {
     }
 
     results
+}
+
+pub fn change_words(line: &str) -> String {
+    let line = line.replace("one", "o1e");
+    let line = line.replace("two", "t2o");
+    let line = line.replace("three", "t3e");
+    let line = line.replace("four", "4");
+    let line = line.replace("five", "5e");
+    let line = line.replace("six", "6");
+    let line = line.replace("seven", "7n");
+    let line = line.replace("eight", "e8t");
+    let line = line.replace("nine", "n9e");
+    line.to_string()
 }
 
 pub fn remove_letters(line: &str) -> String {
@@ -99,5 +113,19 @@ mod tests {
         let v2 = vec![2, 3, 4];
 
         assert_eq!(9, sum_numbers(v2))
+    }
+
+    #[test]
+    fn words_to_num() {
+        let line = "onetwothreefourfivesixseveneightnine";
+
+        assert_eq!("o1et2ot3e45e67ne8tn9e", change_words(line))
+    }
+
+    #[test]
+    fn words_confound() {
+        let line = "xtwone3four";
+
+        assert_eq!("xt2o1e34", change_words(line))
     }
 }
