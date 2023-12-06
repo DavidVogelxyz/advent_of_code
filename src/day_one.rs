@@ -20,10 +20,7 @@ pub fn filter_strings(contents: String) -> Vec<u32> {
         let result = remove_letters(&line);
         let result = modify_numbers(&result);
 
-        let number: u32 = match result.trim().parse() {
-            Ok(num) => num,
-            Err(_) => 0,
-        };
+        let number: u32 = result.trim().parse::<u32>().unwrap();
 
         results.push(number);
     }
