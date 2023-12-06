@@ -1,7 +1,7 @@
-pub mod day_one;
+pub mod day_two;
 
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    day_one::solve()
+    day_two::solve()
 }
