@@ -1,4 +1,3 @@
-use crate::day_two;
 use std::error::Error;
 use std::fs;
 
@@ -114,9 +113,9 @@ pub fn parse_games(input: &str) -> Vec<Game> {
 }
 
 pub fn solve() -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string("src/day_two/input.txt")?;
+    let contents = fs::read_to_string("src/day02/input.txt")?;
 
-    let games = day_two::parse_games(&contents);
+    let games = parse_games(&contents);
 
     // step 1
     //const RED_MAX: u32 = 12;

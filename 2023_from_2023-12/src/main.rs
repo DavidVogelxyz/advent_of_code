@@ -1,5 +1,5 @@
-//pub mod day_one;
-//pub mod day_two;
+pub mod day01;
+pub mod day02;
 //pub mod day03;
 pub mod day04;
 pub mod day04_redo;
