@@ -3,20 +3,34 @@ use std::fs;
 
 pub fn solve() -> Result<(), Box<dyn Error>> {
     let input = fs::read_to_string("src/day04/input.txt")?;
+    let result = parse_games_part_two(&input);
 
-    let result = dbg!(parse_games(&input));
+    let mut copies: Vec<u32> = vec![0; result.len()];
+    let mut scratchcards: u32 = 0;
 
-    //what needs to happen here is:
-    //remove the card id and ':'
-    //delineate the two lists by '|'
-    //get two lists created for comparison
-    //run the comparison
-    //collect the power values
-    //sum them
+    for (i, value) in result.iter().enumerate() {
+        dbg!(i);
+        dbg!(value);
 
-    let answer: u32 = result.iter().sum();
+        let card_copies = *copies.get(i).unwrap_or(&0);
+        scratchcards += 1 + card_copies;
 
-    dbg!(answer);
+        if *value > 0 {
+            for j in 0..*value {
+                let next_card = i + 1 + j as usize;
+                if next_card < result.len() {
+                    let next_card_copies = copies.get_mut(next_card).unwrap();
+                    *next_card_copies += card_copies + 1;
+                }
+            }
+        }
+    }
+
+    println!("answer: {}", scratchcards);
+
+    //let answer: u32 = scratchcards.iter().sum();
+
+    //dbg!(answer);
 
     Ok(())
 }
@@ -91,6 +105,45 @@ pub fn per_line(input: &str) -> u32 {
 pub fn parse_games(input: &str) -> Vec<u32> {
     input.lines().map(|line| per_line(line)).collect()
 }
+
+pub fn compare_lists_part_two(win: Vec<u32>, mine: Vec<u32>) -> u32 {
+    let mut count: u32 = 0;
+
+    for item in mine {
+        if win.contains(&item) {
+            count += 1
+        }
+    }
+
+    count
+}
+
+pub fn per_line_part_two(input: &str) -> u32 {
+    let input = parse_game(&replace_double_space(&input));
+
+    let win = get_list(&split_input(&input, 0));
+    let mine = get_list(&split_input(&input, 1));
+
+    let result = compare_lists_part_two(win, mine);
+
+    result
+}
+
+pub fn parse_games_part_two(input: &str) -> Vec<u32> {
+    input.lines().map(|line| per_line_part_two(line)).collect()
+}
+
+//pub fn algo_iter(result: Vec<u32>) -> Vec<u32> {
+//    let mut list_two: Vec<u32> = Vec::new();
+//
+//    for i in result {
+//        let count = 1 * i;
+//
+//        list_two.push(count)
+//    }
+//
+//    list_two
+//}
 
 //pub fn parse_card(input: &str) -> Vec<u32> {
 //    let card_id = get_card_id(input);
