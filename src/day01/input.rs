@@ -1,13 +1,12 @@
-use crate::day_one;
 use std::error::Error;
 use std::fs;
 
 pub fn solve() -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string("src/day_one/input.txt")?;
+    let contents = fs::read_to_string("src/day01/input.txt")?;
 
-    let v2 = day_one::filter_strings(contents);
+    let v2 = filter_strings(contents);
 
-    dbg!(day_one::sum_numbers(v2));
+    dbg!(sum_numbers(v2));
 
     Ok(())
 }
