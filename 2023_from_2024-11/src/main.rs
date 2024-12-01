@@ -1,6 +1,6 @@
-mod d1;
-use d1::day_one_part_two;
+mod d3;
+use d3::day_three_part_one;
 
 fn main() {
-    dbg!(day_one_part_two());
+    dbg!(day_three_part_one());
 }
