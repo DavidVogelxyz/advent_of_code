@@ -1,106 +1,76 @@
 use std::fs;
 
 pub fn read_file() -> String {
-    let file_path = "inputs/d3p1_test.txt";
+    let file_path = "inputs/d3_input.txt";
 
     fs::read_to_string(file_path)
         .expect("Should be able to read file.")
 }
 
-const DIRS: [[i8; 2]; 8] = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+pub fn walk(input: &str) -> u32 {
+    let grid = input
+        .trim()
+        .lines()
+        .map(|line| line
+            .trim()
+            .chars()
+            .collect::<Vec<_>>())
+        .collect::<Vec<_>>();
 
-// returns Chars(['4', '6', '7', '.', '.', '1', '1', '4', '.', '.'])
-// returns Vec named Chars
-pub fn walk0(contents: String) {
-    //let mut curr_num = 0;
-    //let mut flag_add = false;
-    //let mut flag_num_end = false;
+    let mut sum = 0;
+    let mut curr_num = 0;
+    let mut has_adj_sym = false;
 
-    for line in contents.lines() {
-        let char = line.chars();
-        println!("{:?}", char);
-    }
-}
+    for row in 0.. grid.len() {
+        for col in 0.. grid[row].len() {
+            let value = grid[row][col];
 
-// same as walk0, but with no comments
-pub fn walk1(contents: String) {
-    for line in contents.lines() {
-        let char = line.chars();
-        println!("{:?}", char);
-    }
-}
+            if !value.is_ascii_digit() {
+                continue
+            }
 
-// returns [52, 54, 55, 46, 46, 49, 49, 52, 46, 46]
-// aka bytes
-pub fn walk2(contents: String) {
-    for line in contents.lines() {
-        let char = line.as_bytes();
-        println!("{:?}", char);
-    }
-}
+            for row_offset in -1..=1 {
+                for col_offset in -1..=1 {
+                    if row_offset == 0 && col_offset == 0 {
+                        continue
+                    }
 
-// returns ['4', '6', '7', '.', '.', '1', '1', '4', '.', '.']
-// returns Vec of chars
-pub fn walk3(contents: String) {
-    for line in contents.lines() {
-        let char: Vec<char> = line.chars().collect();
-        println!("{:?}", char);
-    }
-}
+                    let adj_row = row as i32 + row_offset;
+                    let adj_col = col as i32 + col_offset;
 
-pub fn walk4(contents: String) -> Vec<u32> {
-    let mut nums_to_sum: Vec<u32> = Vec::new();
-    let mut curr_num: Vec<u32> = Vec::new();
-    let mut flag_add = false;
-    //let mut flag_num_end = false;
+                    if adj_row < 0
+                        || adj_row >= grid.len() as i32
+                            || adj_col < 0
+                            || adj_col >=grid[adj_row as usize].len() as i32
+                    {
+                        continue
+                    }
 
-    for line in contents.lines() {
-        let char: Vec<char> = line.chars().collect();
-
-        for item in char {
-            //if item.is_numeric() {
-                //let item = item as i32;   // this turned it into bytes
-                //let item = item.to_digit(10).expect("this should be a number.");
-                //curr_num.push(item);
-            //};
-            if item.is_digit(10) {
-                //let item = item as i32;   // this turned it into bytes
-                let item = item.to_digit(10).expect("this should be a number.");
-                curr_num.push(item);
-                flag_add = true;
-            } else {
-                if flag_add == true {
-                    //let mut new_num: u32 = 0;
-                    let new_num: u32 = cat(&curr_num);
-                    nums_to_sum.push(new_num);
-                    println!("{:?}", new_num);
-                    flag_add = false;
-                    curr_num.clear();
+                    let adj_value = grid[adj_row as usize][adj_col as usize];
+                    if !adj_value.is_ascii_digit() && adj_value != '.' {
+                        has_adj_sym = true;
+                    }
                 }
-            };
+            }
+
+            curr_num *= 10;
+            curr_num += value.to_digit(10).unwrap();
+
+            if col + 1 >= grid[row].len() || !grid[row][col + 1].is_ascii_digit() {
+                if has_adj_sym {
+                    sum += curr_num;
+                }
+
+                curr_num = 0;
+                has_adj_sym = false;
+            }
         }
     }
 
-    println!{"{:?}", nums_to_sum};
-    return nums_to_sum
-}
-
-pub fn cat(vec: &Vec<u32>) -> u32 {
-    vec
-        .iter()
-        .fold(0, |acc, elem| acc * 10 + elem)
-}
-
-pub fn sum_num(vec: Vec<u32>) -> u32 {
-    vec
-        .iter()
-        .sum()
+    sum
 }
 
 pub fn day_three_part_one() -> u32 {
     let contents = read_file();
-    println!("{}", contents);
-    println!("{:?}", DIRS);
-    let nums_to_sum = walk4(contents);
-    sum_num(nums_to_sum)
+    walk(&contents)
 }
