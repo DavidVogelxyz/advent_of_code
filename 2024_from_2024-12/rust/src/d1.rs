@@ -1,4 +1,4 @@
-use std::fs;
+use std::{collections::HashMap, fs};
 
 pub fn read_file(file: &str) -> String {
     fs::read_to_string(file)
@@ -31,7 +31,7 @@ pub fn bubble_sort(arr: &mut Vec<i32>) -> &mut Vec<i32> {
     arr
 }
 
-pub fn parse(input: String) -> i32 {
+pub fn parse_part_one(input: String) -> i32 {
     let mut list_one = Vec::new();
     let mut list_two = Vec::new();
 
@@ -41,17 +41,17 @@ pub fn parse(input: String) -> i32 {
             .split_whitespace()
             .collect::<Vec<_>>();
 
-        let elem_one = line[0].parse::<i32>().unwrap();
-        let elem_two = line[1].parse::<i32>().unwrap();
-
-        list_one.push(elem_one);
-        list_two.push(elem_two);
+        list_one.push(line[0].parse::<i32>().unwrap());
+        list_two.push(line[1].parse::<i32>().unwrap());
     }
 
     // sort the lines
-    // used bubble sort because "let list_one = list_one.sort();" wasn't working
-    let list_one = bubble_sort(&mut list_one).to_owned();
-    let list_two = bubble_sort(&mut list_two).to_owned();
+    // used bubble sort because "list_one = list_one.sort();" wasn't working
+    //list_one = bubble_sort(&mut list_one).to_owned();
+    //list_two = bubble_sort(&mut list_two).to_owned();
+    // figured out the mistake
+    list_one.sort();
+    list_two.sort();
 
     //println!("{:?}", list_one);
     //println!("{:?}", list_two);
@@ -87,10 +87,85 @@ pub fn parse(input: String) -> i32 {
     return sum
 }
 
+pub fn parse_part_two(input: String) -> i32 {
+    let mut list_one = Vec::new();
+    let mut list_two = Vec::new();
+
+    for line in input.lines() {
+        let line = line
+            .trim()
+            .split_whitespace()
+            .collect::<Vec<_>>();
+
+        list_one.push(line[0].parse::<i32>().unwrap());
+        list_two.push(line[1].parse::<i32>().unwrap());
+    }
+
+    // sort the lists
+    // used bubble sort because "list_one = list_one.sort();" wasn't working
+    //list_one = bubble_sort(&mut list_one).to_owned();
+    //list_two = bubble_sort(&mut list_two).to_owned();
+    // figured out the mistake
+    list_two.sort();
+
+    let mut two_iter = list_two.iter();
+    let mut cheatsheet: HashMap<i32, i32> = HashMap::new();
+    let mut length = 0;
+
+    loop {
+        if length >= list_two.len() {
+            break
+        }
+        //let value = dbg!(two_iter.next().expect("num").clone());
+        let value = two_iter.next().expect("num").clone();
+
+        if ! cheatsheet.contains_key(&value) {
+            cheatsheet.insert(value, 1)
+        } else {
+            let mut count = *cheatsheet.get(&value).expect("num");
+            count += 1;
+            cheatsheet.insert(value, count)
+        };
+        length += 1;
+    }
+
+    let mut one_iter = list_one.iter();
+
+    let mut count = 0;
+    let mut sum = 0;
+    //let mut product = 0;
+
+    loop {
+        if count >= list_one.len() {
+            break
+        }
+
+        let one = one_iter.next().expect("num");
+
+        if ! cheatsheet.contains_key(&one) {
+            sum += one * 0;
+        } else {
+            sum += one * cheatsheet.get(one).expect("num");
+        };
+
+        //dbg!(sum += product);
+
+        count += 1;
+    }
+
+    sum
+}
+
 pub fn day_one_part_one(file: &str) -> i32 {
     let contents = read_file(file);
 
-    parse(contents)
+    parse_part_one(contents)
+}
+
+pub fn day_one_part_two(file: &str) -> i32 {
+    let contents = read_file(file);
+
+    parse_part_two(contents)
 }
 
 #[cfg(test)]
@@ -102,5 +177,12 @@ mod tests {
         let file = "../inputs/d1_test.txt";
 
         assert_eq!(11, day_one_part_one(file))
+    }
+
+    #[test]
+    fn day_one_part_two_test() {
+        let file = "../inputs/d1_test.txt";
+
+        assert_eq!(31, day_one_part_two(file))
     }
 }
