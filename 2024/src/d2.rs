@@ -73,7 +73,9 @@ pub fn parse_part_two(input: String) -> i32 {
     let mut total = 0;
 
     for line in input.lines() {
-        println!("attempting line: {}", line);
+        // DEBUG
+        //println!("attempting line: {}", line);
+
         //let arr: Vec<&str> = line.trim().split_whitespace().collect::<Vec<_>>();
         let line = line.trim().split_whitespace().collect::<Vec<_>>();
         let line_iter = line.iter();
@@ -88,36 +90,49 @@ pub fn parse_part_two(input: String) -> i32 {
         let mut prev = v_iter.next().expect("num");
         let mut curr_num = v_iter.next().expect("num");
 
-        let is_increasing;
+        let mut polarity;
         let mut is_safe = true;
         let mut diff;
 
         if curr_num < prev {
-            is_increasing = false;
+            polarity = -1;
         } else if curr_num > prev {
-            is_increasing = true;
+            polarity = 1;
         } else {
-            continue;
+            polarity = 0;
         }
 
-        if is_increasing == false {
+        if polarity == -1 {
             diff = prev - curr_num;
-        } else {
+        } else if polarity == 1 {
             diff = curr_num - prev;
+        } else {
+            diff = 0;
         }
 
         if diff < 1 || diff > 3 {
-            continue;
+            is_safe = false;
         }
 
         for item in v_iter.clone() {
             prev = curr_num;
             curr_num = item;
 
-            if is_increasing == false {
+            if polarity == -1 {
                 diff = prev - curr_num;
-            } else {
+            } else if polarity == 1 {
                 diff = curr_num - prev;
+            } else {
+                if curr_num < prev {
+                    polarity = -1;
+                    diff = prev - curr_num;
+                } else if curr_num > prev {
+                    polarity = 1;
+                    diff = curr_num - prev;
+                } else {
+                    polarity = 0;
+                    diff = 0;
+                }
             }
 
             if diff < 1 || diff > 3 {
@@ -127,9 +142,9 @@ pub fn parse_part_two(input: String) -> i32 {
         }
 
         // DEBUG
-        if is_safe == true {
-            println!("THIS ONE SUCCEEDED WITHOUT MANIPULATION: {:?}", v);
-        }
+        //if is_safe == true {
+        //    println!("THIS ONE SUCCEEDED WITHOUT MANIPULATION: {:?}", v);
+        //}
 
         if is_safe == false {
             let mut n = 0;
@@ -142,25 +157,28 @@ pub fn parse_part_two(input: String) -> i32 {
                 let mut curr_num = v_clone_iter.next().expect("num");
                 n += 1;
 
-                let is_increasing;
+                let polarity;
                 is_safe = true;
                 let mut diff;
 
                 if curr_num < prev {
-                    is_increasing = false;
+                    polarity = -1;
                 } else if curr_num > prev {
-                    is_increasing = true;
+                    polarity = 1;
                 } else {
-                    continue;
+                    polarity = 0;
                 }
 
-                if is_increasing == false {
+                if polarity == -1 {
                     diff = prev - curr_num;
-                } else {
+                } else if polarity == 1 {
                     diff = curr_num - prev;
+                } else {
+                    diff = 0;
                 }
 
                 if diff < 1 || diff > 3 {
+                    is_safe = false;
                     continue;
                 }
 
@@ -168,30 +186,33 @@ pub fn parse_part_two(input: String) -> i32 {
                     prev = curr_num;
                     curr_num = item;
 
-                    if is_increasing == false {
+                    if polarity == -1 {
                         diff = prev - curr_num;
-                    } else {
+                    } else if polarity == 1 {
                         diff = curr_num - prev;
+                    } else {
+                        is_safe = false;
+                        continue;
                     }
 
                     if diff < 1 || diff > 3 {
                         is_safe = false;
-                        break;
+                        continue;
                     }
 
                 }
 
                 if is_safe == true {
                     // DEBUG
-                    println!("THIS ONE WAS PROBLEM DAMPENED: {:?}", v_clone);
+                    //println!("THIS ONE WAS PROBLEM DAMPENED: {:?}", v_clone);
                     break;
                 }
             }
 
             // DEBUG
-            if is_safe == false {
-                println!("THIS ONE COMPLETELY FAILED: {:?}", v);
-            }
+            //if is_safe == false {
+            //    println!("THIS ONE COMPLETELY FAILED: {:?}", v);
+            //}
         }
 
         if is_safe == true {
