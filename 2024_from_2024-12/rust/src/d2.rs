@@ -9,7 +9,6 @@ pub fn parse_part_one(input: String) -> i32 {
     let mut total = 0;
 
     for line in input.lines() {
-        //let arr: Vec<&str> = line.trim().split_whitespace().collect::<Vec<_>>();
         let line = line.trim().split_whitespace().collect::<Vec<_>>();
         let line_iter = line.iter();
         let mut v: Vec<i32> = Vec::new();
@@ -19,54 +18,47 @@ pub fn parse_part_one(input: String) -> i32 {
             v.push(value);
         }
 
-        let mut v_iter = v.iter();
-        let mut prev = v_iter.next().expect("num");
-        let mut curr_num = v_iter.next().expect("num");
+        let mut prev = v[0];
+        let mut curr_num = v[1];
 
         let is_increasing;
         let mut is_safe = true;
-        let mut diff;
 
         if curr_num < prev {
             is_increasing = false;
         } else if curr_num > prev {
             is_increasing = true;
         } else {
-            continue;
+            continue
         }
 
-        if is_increasing == false {
-            diff = prev - curr_num;
-        } else {
-            diff = curr_num - prev;
-        }
+        for i in 1.. v.len() {
+            prev = v[i - 1];
+            curr_num = v[i];
 
-        if diff < 1 || diff > 3 {
-            continue;
-        }
+            let diff = prev - curr_num;
+            let diff_abs = diff.abs();
 
-        for item in v_iter.clone() {
-            prev = curr_num;
-            curr_num = item;
-
-            if is_increasing == false {
-                diff = prev - curr_num;
-            } else {
-                diff = curr_num - prev;
+            if diff_abs < 1 || diff_abs > 3 {
+                is_safe = false;
+                continue
             }
 
-            if diff < 1 || diff > 3 {
+            if is_increasing == true && prev > curr_num {
                 is_safe = false;
-                break;
+                continue
+            } if is_increasing == false && curr_num > prev {
+                is_safe = false;
+                continue
             }
         }
 
         if is_safe == true {
-            total += 1
+            total += 1;
         }
     }
 
-     total
+    total
 }
 
 pub fn parse_part_two(input: String) -> i32 {
