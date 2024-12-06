@@ -9,7 +9,16 @@ pub fn parse_part_one(input: String) -> i32 {
     let mut total = 0;
 
     for line in input.lines() {
-        let exit_code = proc_anal(line);
+        let line = line.trim().split_whitespace().collect::<Vec<_>>();
+        let line_iter = line.iter();
+        let mut v: Vec<i32> = Vec::new();
+
+        for item in line_iter {
+            let value = item.parse::<i32>().unwrap();
+            v.push(value);
+        }
+
+        let exit_code = proc_anal(v);
 
         if exit_code == 0 {
             total += 1;
@@ -19,16 +28,7 @@ pub fn parse_part_one(input: String) -> i32 {
     total
 }
 
-pub fn proc_anal(line: &str) -> i32 {
-    let line = line.trim().split_whitespace().collect::<Vec<_>>();
-    let line_iter = line.iter();
-    let mut v: Vec<i32> = Vec::new();
-
-    for item in line_iter {
-        let value = item.parse::<i32>().unwrap();
-        v.push(value);
-    }
-
+pub fn proc_anal(v: Vec<i32>) -> i32 {
     let mut prev = v[0];
     let mut curr_num = v[1];
 
