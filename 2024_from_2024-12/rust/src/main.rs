@@ -1,8 +1,8 @@
-mod d2;
-use d2::day_two_part_two;
+mod d3;
+use d3::day_three_part_one;
 
 fn main() {
-    let file = "../inputs/d2.txt";
+    let file = "../inputs/d3.txt";
 
-    dbg!(day_two_part_two(file));
+    dbg!(day_three_part_one(file));
 }
