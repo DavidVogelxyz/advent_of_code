@@ -142,6 +142,7 @@ pub fn walk_part_two(input: String) -> i32 {
 
     for row in 0.. grid.len() {
         for col in 0.. grid[row].len() {
+            let mut check_x = 0;
             let value_x = grid[row][col];
             let mut c = 'A';
 
@@ -152,17 +153,21 @@ pub fn walk_part_two(input: String) -> i32 {
             //println!("starting 'A' found at ({}, {})", row, col);
 
             c = 'M';
-            let results_m = adj_check_m_part_two(grid.clone(), row, col, c);
+            let results_m = adj_check_a_part_two(grid.clone(), row, col, c);
             for result in results_m {
-                //println!("adjacent 'M' found at ({}, {})", value_next.0, value_next.1);
+                //println!("adjacent 'M' found at ({}, {})", result.0, result.1);
                 c = 'S';
-                let value_next = adj_check_next(grid.clone(), result.0, result.1, result.2, result.3, c);
+                let value_next = adj_check_next(grid.clone(), row, col, result.2 * -1, result.3 * -1, c);
                 if (value_next.2, value_next.3) == (0, 0) {
                     //println!("couldn't find an adjacent 'S'");
                     continue
                 }
 
                 //println!("adjacent 'S' found at ({}, {})", value_next.0, value_next.1);
+                check_x += 1;
+            }
+
+            if check_x == 2 {
                 sum += 1;
             }
         }
@@ -171,7 +176,7 @@ pub fn walk_part_two(input: String) -> i32 {
     sum
 }
 
-pub fn adj_check_m_part_two(grid: Vec<Vec<char>>, row: usize, col: usize, c: char) -> Vec<(usize, usize, i32, i32)> {
+pub fn adj_check_a_part_two(grid: Vec<Vec<char>>, row: usize, col: usize, c: char) -> Vec<(usize, usize, i32, i32)> {
     let mut results: Vec<(usize, usize, i32, i32)> = Vec::new();
 
     for row_offset in -1..=1 {
