@@ -21,7 +21,7 @@ pub fn turn(char: char) -> char {
     char
 }
 
-pub fn attempt_to_walk(grid: Vec<Vec<char>>, guard: (usize, usize)) -> Vec<Vec<char>> {
+pub fn attempt_to_walk(grid: Vec<Vec<char>>, guard: (usize, usize, char)) -> (Vec<Vec<char>>, usize, usize, char) {
     let mut grid = grid;
     let r = guard.0;
     let c = guard.1;
@@ -68,30 +68,31 @@ pub fn attempt_to_walk(grid: Vec<Vec<char>>, guard: (usize, usize)) -> Vec<Vec<c
 
     if offmap == true {
         grid[r][c] = 'X';
-        return grid
+        return (grid, r, c, char)
     }
 
     if next_tile != '#' {
         grid[r][c] = 'X';
         grid[r_next][c_next] = char;
         //println!("guard moved to: ({}, {})", r_next, c_next);
-        grid
+        (grid, r_next, c_next, char)
     } else {
         char = turn(char);
         grid[r][c] = char;
         //println!("guard turned at: ({}, {})", r, c);
-        grid
+        (grid, r, c, char)
     }
 }
 
-pub fn find_guard(grid: Vec<Vec<char>>) -> (usize, usize) {
+pub fn find_guard(grid: Vec<Vec<char>>) -> (usize, usize, char) {
     let mut guard_found = false;
     let mut r = 0;
     let mut c = 0;
+    let mut value = '.';
 
     for row in 0.. grid.len() {
         for col in 0.. grid[row].len() {
-            let value = grid[row][col];
+            value = grid[row][col];
 
             if value == '^' || value == '>' || value == 'v' || value == '<' {
                 guard_found = true;
@@ -107,7 +108,7 @@ pub fn find_guard(grid: Vec<Vec<char>>) -> (usize, usize) {
     }
 
     //println!("guard is at coords ({}, {})", r, c);
-    (r, c)
+    (r, c, value)
 }
 
 pub fn walk(input: String) -> u32 {
@@ -120,19 +121,22 @@ pub fn walk(input: String) -> u32 {
             .collect::<Vec<_>>())
         .collect::<Vec<_>>();
 
-    let mut guard = find_guard(grid.clone());
+    let mut guard_output = find_guard(grid.clone());
+    let mut output;
     let mut grid_new;
+    let mut guard_output_new;
 
     loop {
-        grid_new = attempt_to_walk(grid.clone(), guard);
-        // feel like the guard shouldn't have to be found each and every time
-        guard = find_guard(grid_new.clone());
+        output = attempt_to_walk(grid, guard_output);
+        grid_new = output.0;
+        guard_output_new = (output.1, output.2, output.3);
 
-        if grid_new == grid {
+        if guard_output_new == guard_output {
             break;
         }
 
         grid = grid_new;
+        guard_output = guard_output_new;
     }
 
     sum(grid_new)
