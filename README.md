@@ -7,3 +7,4 @@ This repo contains all of my different solves for Advent of Code.
 - [Advent of Code 2023 - 2023 December - Rust](2023_from_2023-12/)
 - [Advent of Code 2023 - 2024 November - Rust](2023_from_2024-11/)
 - [Advent of Code 2024 - 2024 December](2024_from_2024-12/)
+- [Advent of Code 2020 - 2025 October](2020_from_2025-10/)
