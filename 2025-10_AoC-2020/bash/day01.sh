@@ -46,7 +46,7 @@ add_array_part_two() {
 }
 
 main() {
-    local arr=($(<"${INPUT_FILE}"))
+    readarray -t arr < "$INPUT_FILE"
 
     add_array_part_two
 }
