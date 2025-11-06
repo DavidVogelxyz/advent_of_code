@@ -34,11 +34,26 @@ day_three_part_one() {
     echo "$sum trees were hit while travelling."
 }
 
+day_three_part_two() {
+    n1="$(r=1 d=1 travel)"
+    n2="$(r=3 d=1 travel)"
+    n3="$(r=5 d=1 travel)"
+    n4="$(r=7 d=1 travel)"
+    n5="$(r=1 d=2 travel)"
+
+    product="$(( n1 * n2 * n3 * n4 * n5 ))"
+
+    echo "Product of sums = $product"
+}
+
 main() {
     readarray -t arr < "$INPUT_FILE"
 
     # PART ONE
-    day_three_part_one
+    #day_three_part_one
+
+    # PART TWO
+    day_three_part_two
 }
 
 main
