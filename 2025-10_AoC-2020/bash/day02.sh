@@ -44,10 +44,13 @@ valid_part_two() {
         # Get the char of interest
         local c="${char%%:*}"
 
+        # Skip if "low bound" and "high bound" are ever the same
+        if [[ "${string:$l:1}" == "${string:$u:1}" ]]; then
+            continue
+        fi
+
         if [[ "${string:$l:1}" == "$c" ]]; then
-            if ! [[ "${string:$u:1}" == "$c" ]]; then
-                sum=$((sum + 1))
-            fi
+            sum=$((sum + 1))
         elif [[ "${string:$u:1}" == "$c" ]]; then
             sum=$((sum + 1))
         fi
@@ -57,6 +60,10 @@ valid_part_two() {
 }
 
 main() {
+    # PART ONE
+    #valid_part_one
+
+    # PART TWO
     valid_part_two
 }
 

@@ -55,12 +55,14 @@ def day_two_part_two(arr):
         # Get the char of interest
         c = slice[0]
 
+        # Skip if "low bound" and "high bound" are ever the same
+        if lo == hi:
+            continue
+
         if c == lo:
-            if c != hi:
-                sum += 1
+            sum += 1
         elif c == hi:
-            if c != lo:
-                sum += 1
+            sum += 1
 
     return sum
 
@@ -69,7 +71,10 @@ def main():
     with open("../inputs/d02.txt", "r") as file:
         arr = [line.strip() for line in file]
 
+    # PART ONE
     #sum = day_two_part_one(arr)
+
+    # PART TWO
     sum = day_two_part_two(arr)
 
     print(f"The sum is {sum}")
