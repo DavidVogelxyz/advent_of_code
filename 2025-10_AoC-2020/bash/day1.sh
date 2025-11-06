@@ -48,6 +48,10 @@ add_array_part_two() {
 main() {
     readarray -t arr < "$INPUT_FILE"
 
+    # PART ONE
+    #add_array_part_one
+
+    # PART TWO
     add_array_part_two
 }
 
