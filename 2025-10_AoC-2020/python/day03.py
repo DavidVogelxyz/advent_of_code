@@ -1,33 +1,56 @@
-def day_three_part_one(arr):
+def travel(arr, right, down):
     sum = 0
 
     # The first character in `arr` is position `0`
     x = 0
 
-    # The first line is "line 1"
-    y = 1
+    # The first line in `arr` is position `0`
+    y = 0
 
-    # Since the lines are all the same char length, get the length of a line
-    length = int(len(arr[0]))
+    # Since the lines are all the same char length, get the line_len
+    line_len = int(len(arr[0]))
 
-    for line in arr:
+    # get the total number of lines
+    total_lines = int(len(arr))
+
+    while y < total_lines:
+        line = arr[y]
+
         # Skip the first line; treat the other lines
-        if y != 1:
+        if y != 0:
             # If the character is a tree, add to total
             if line[x] == "#":
                 sum += 1
 
-        # Move 3 positions to the right
-        x += 3
+        # Move to the right
+        x += right
 
         # Loop back over line, if necessary
-        if x > length - 1:
-            x = x - length
+        if x > line_len - 1:
+            x = x - line_len
 
-        # Move the `y` counter down a line
-        y += 1
+        # Move down
+        y += down
 
     return sum
+
+
+def day_three_part_one(arr):
+    sum = travel(arr, 3, 1)
+
+    return sum
+
+
+def day_three_part_two(arr):
+    n1 = travel(arr, 1, 1)
+    n2 = travel(arr, 3, 1)
+    n3 = travel(arr, 5, 1)
+    n4 = travel(arr, 7, 1)
+    n5 = travel(arr, 1, 2)
+
+    product = n1 * n2 * n3 * n4 * n5
+
+    return product
 
 
 def main():
@@ -35,9 +58,12 @@ def main():
         arr = [line.strip() for line in file]
 
     # PART ONE
-    sum = day_three_part_one(arr)
+    #sum = day_three_part_one(arr)
+    #print(f"{sum} trees were hit while travelling.")
 
-    print(f"{sum} trees were hit while travelling.")
+    # PART TWO
+    product = day_three_part_two(arr)
+    print(f"Product of sums = {product}")
 
 
 if __name__ == "__main__":
