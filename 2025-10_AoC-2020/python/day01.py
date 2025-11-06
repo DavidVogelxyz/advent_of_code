@@ -47,9 +47,11 @@ def main():
     with open("../inputs/d01.txt", "r") as file:
         arr = [line.strip() for line in file]
 
+    # PART ONE
     #l, r = day_one_part_one_add(arr)
     #day_one_part_one_multiply(l, r)
 
+    # PART TWO
     l, m, r = day_one_part_two_add(arr)
     day_one_part_two_multiply(l, m, r)
 
