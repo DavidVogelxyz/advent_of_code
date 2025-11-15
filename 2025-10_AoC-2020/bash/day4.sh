@@ -23,10 +23,10 @@ eye_colors=(
 )
 
 parse_line_part_one() {
-    arr=($1)
+    local arr=($1)
 
     for item in "${arr[@]}"; do
-        field="${item%%:*}"
+        local field="${item%%:*}"
         passport+=("$field")
     done
 }
@@ -47,10 +47,10 @@ is_passport_valid() {
 }
 
 day_four_part_one() {
-    passport=()
-    pass_num=1
-    sum=0
-    valid=true
+    local passport=()
+    local pass_num=1
+    local sum=0
+    local valid=true
 
     while read -r line; do
         if ! [[ "$line" == "" ]]; then
@@ -73,7 +73,7 @@ day_four_part_one() {
 }
 
 parse_line_part_two() {
-    arr=($1)
+    local arr=($1)
 
     for item in "${arr[@]}"; do
         # If the previous item was invalid, break out of `for` loop
@@ -82,8 +82,8 @@ parse_line_part_two() {
             break
         fi
 
-        field="${item%%:*}"
-        value="${item##*:}"
+        local field="${item%%:*}"
+        local value="${item##*:}"
 
         case "$field" in
             "byr")
@@ -107,7 +107,7 @@ parse_line_part_two() {
             "hgt")
                 if [[ "$value" == *"cm" ]]; then
                     # remove the units
-                    cm="${value%%cm}"
+                    local cm="${value%%cm}"
 
                     # check the centimeter range
                     if (( cm >= 150 && cm <= 193 )); then
@@ -117,7 +117,7 @@ parse_line_part_two() {
                     fi
                 elif [[ "$value" == *"in" ]]; then
                     # remove the units
-                    in="${value%%in}"
+                    local in="${value%%in}"
 
                     # check the inches range
                     if (( in >= 59 && in <= 76 )); then
@@ -172,10 +172,10 @@ parse_line_part_two() {
 }
 
 day_four_part_two() {
-    passport=()
-    pass_num=1
-    sum=0
-    valid=true
+    local passport=()
+    local pass_num=1
+    local sum=0
+    local valid=true
 
     while read -r line; do
         if ! [[ "$line" == "" ]]; then
