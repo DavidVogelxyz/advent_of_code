@@ -38,9 +38,7 @@ check_passport() {
             break
         fi
     done < <(printf "%s\n" "${must_contain[@]}")
-}
 
-is_passport_valid() {
     if [[ "$valid" == true ]]; then
         sum=$((sum + 1))
     fi
@@ -57,8 +55,6 @@ day_four_part_one() {
             parse_line_part_one "$line"
         else
             check_passport "${passport[*]}"
-            is_passport_valid
-
             passport=()
             pass_num=$((pass_num + 1))
             valid=true
@@ -67,7 +63,6 @@ day_four_part_one() {
 
     # Check the last passport
     check_passport "${passport[*]}"
-    is_passport_valid
 
     echo "There are $sum valid passports!"
 }
@@ -182,8 +177,6 @@ day_four_part_two() {
             parse_line_part_two "$line"
         else
             check_passport "${passport[*]}"
-            is_passport_valid
-
             passport=()
             pass_num=$((pass_num + 1))
             valid=true
@@ -192,7 +185,6 @@ day_four_part_two() {
 
     # Check the last passport
     check_passport "${passport[*]}"
-    is_passport_valid
 
     echo "There are $sum valid passports!"
 }
