@@ -57,9 +57,77 @@ day_five_part_one() {
     echo "The highest seat ID is ${highest}."
 }
 
+bubble_sort() {
+    local array=("$@")
+    local count="${#array[@]}"
+
+    # default for `$operated`
+    local operated=1
+
+    for ((i = 0; i < count; i++)); do
+        # set `$operated` to `0` for this loop
+        operated=0
+
+        for ((j = 0; j < (count - i - 1); j++)); do
+            if (( ${array[j]} > ${array[$((j+1))]} )); then
+                local temp="${array[j]}"
+                array[$j]="${array[$((j+1))]}"
+                array[$((j+1))]="$temp"
+                operated=1
+            fi
+        done
+
+        if (( "$operated" == 0 )); then
+            break
+        fi
+    done
+
+    printf "%s\n" "${array[@]}"
+    return
+}
+
+find_missing() {
+    local last=0
+
+    while read -r num; do
+        if ((last == 0)) || (( (last + 1) == num )) ; then
+            last="$num"
+            continue
+        else
+            local result="$((last + 1))"
+            echo "$result"
+            return
+        fi
+    done < <(printf "%s\n" "$@")
+}
+
+day_five_part_two() {
+    local seats=()
+
+    while read -r bsp; do
+        local row="${bsp:0:7}"
+        local col="${bsp:7:3}"
+
+        row="$(binary_search "$row")"
+        col="$(binary_search "$col")"
+
+        local seat_ID="$((8 * row + col))"
+
+        seats+=($seat_ID)
+    done < "$INPUT_FILE"
+
+    sorted=($(bubble_sort "${seats[@]}"))
+    result=$(find_missing "${sorted[@]}")
+
+    echo "The seat ID is ${result}."
+}
+
 main() {
     # PART ONE
-    day_five_part_one
+    #day_five_part_one
+
+    # PART TWO
+    day_five_part_two
 }
 
 main
