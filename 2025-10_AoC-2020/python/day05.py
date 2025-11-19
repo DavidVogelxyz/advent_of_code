@@ -45,12 +45,80 @@ def day_five_part_one(arr):
     print(f"The highest seat ID is {highest}.")
 
 
+def bubble_sort(arr):
+    count = int(len(arr))
+
+    # default for `operated`
+    operated = 1
+
+    i = 0
+
+    while i < count:
+        operated = 0
+        j = 0
+
+        while j < (count - i - 1):
+            if arr[j] > arr[j+1]:
+                temp = arr[j]
+                arr[j] = arr[j+1]
+                arr[j+1] = temp
+                operated = 1
+
+            j += 1
+
+        if operated == 0:
+            break
+
+        i += 1
+
+    return arr
+
+
+def find_missing(arr):
+    count = int(len(arr))
+    last = 0
+    i = 0
+
+    while i < count:
+        num = arr[i]
+
+        if last == 0 or (last + 1) == num:
+            last = num
+            i += 1
+        else:
+            result = last + 1
+            return result
+
+
+def day_five_part_two(arr):
+    seats = []
+
+    for bsp in arr:
+        row = bsp[0:7]
+        col = bsp[7:10]
+
+        row = binary_search(row)
+        col = binary_search(col)
+
+        seat_ID = 8 * row + col
+
+        seats += [seat_ID]
+
+    sorted = bubble_sort(seats)
+    result = find_missing(sorted)
+
+    print(f"The seat ID is {result}.")
+
+
 def main():
     with open("../inputs/d05.txt", "r") as file:
         arr = [line.strip() for line in file]
 
     # PART ONE
-    day_five_part_one(arr)
+    #day_five_part_one(arr)
+
+    # PART TWO
+    day_five_part_two(arr)
 
 
 if __name__ == "__main__":
