@@ -83,7 +83,6 @@ bubble_sort() {
     done
 
     printf "%s\n" "${array[@]}"
-    return
 }
 
 find_missing() {
@@ -92,7 +91,6 @@ find_missing() {
     while read -r num; do
         if ((last == 0)) || (( (last + 1) == num )) ; then
             last="$num"
-            continue
         else
             local result="$((last + 1))"
             echo "$result"
