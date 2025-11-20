@@ -37,9 +37,66 @@ day_six_part_one() {
     echo "The sum is ${sum}."
 }
 
+parse_line_part_two() {
+    local string="$1"
+    local count="${#string}"
+    person="$((person + 1))"
+
+    if ((person == 1)); then
+        for ((i=0; i < count; i++)); do
+            local letter="${string:$i:1}"
+
+            # if the `group` array does not contain the letter, add it
+            if ! [[ "${group[*]}" =~ "$letter" ]]; then
+                group+=("$letter")
+            fi
+        done
+    else
+        local count_group="${#group[@]}"
+
+        for ((i=0; i < count_group; i++)); do
+            local letter="${group[$i]}"
+
+            # if `$string` does not contain the letter, remove it
+            if ! [[ "${string[*]}" =~ "$letter" ]]; then
+                unset group[$i]
+            fi
+        done
+
+        # Re-index `group` array
+        group=("${group[@]}")
+    fi
+}
+
+day_six_part_two() {
+    local group=()
+    local person=0
+    local sum=0
+
+    while read -r line; do
+        if ! [[ "$line" == "" ]]; then
+            parse_line_part_two "$line"
+        else
+            local count="${#group[@]}"
+            sum="$((sum + count))"
+            group=()
+            person=0
+        fi
+    done < "$INPUT_FILE"
+
+    # Add the last group to the sum
+    local count="${#group[@]}"
+    sum="$((sum + count))"
+
+    echo "The sum is ${sum}."
+}
+
 main() {
     # PART ONE
-    day_six_part_one
+    #day_six_part_one
+
+    # PART TWO
+    day_six_part_two
 }
 
 main
