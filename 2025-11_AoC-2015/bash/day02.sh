@@ -26,9 +26,34 @@ part_one() {
     echo "The elves require ${sum} square feet of wrapping paper."
 }
 
+part_two() {
+    local sum=0
+
+    while IFS="x" read -r l w h; do
+        local wrap=0
+
+        if ((l > w)) && ((l > h)); then
+            wrap="$((2 * (w + h)))"
+        elif ((w > h)); then
+            wrap="$((2 * (l + h)))"
+        else
+            wrap="$((2 * (l + w)))"
+        fi
+
+        local bow="$((l * w * h))"
+
+        sum="$((sum + wrap + bow))"
+    done < "$INPUT_FILE"
+
+    echo "The elves require ${sum} feet of ribbon."
+}
+
 main() {
     # PART ONE
-    part_one
+    #part_one
+
+    # PART TWO
+    part_two
 }
 
 main
