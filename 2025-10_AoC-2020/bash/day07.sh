@@ -2,41 +2,34 @@
 
 INPUT_FILE="../inputs/d07.txt"
 
-look_for_things() {
+search() {
     local search_term=("$@")
+    new=()
 
     while read -r line; do
-        local outer="${line%% bags contain*}"
-        local inner="${line##*bags contain }"
+        local container="${line// bag*}"
 
         for term in "${search_term[@]}"; do
-            # If `$inner` contains the search term
-            # And, the array doesn't already contain `$outer`
-            # Then, add `$outer` to the `containers` hashmap
-            if [[ "$inner" =~ "$term" ]] && ! [[ "${containers[@]}" =~ "$outer" ]] ; then
-                containers["$outer"]+="$outer"
+            if [[ "$line" =~ "$term" ]]; then
+                if ! [[ "${bags[@]}" =~ "$container" ]]; then
+                    new+=("$container")
+                    bags+=("$container")
+                fi
             fi
         done
     done < "$INPUT_FILE"
 }
 
 part_one() {
-    declare -A containers
-    local sum="${#containers[@]}"
-    local check=0
+    local new=()
+    local bags=()
+    search " shiny gold"
 
-    # First pass through the input
-    look_for_things "shiny gold"
-    sum="${#containers[@]}"
-
-    # Keep recursing until no changes are made to the `containers` hashmap
-    while ((sum != check)); do
-        check="$sum"
-        look_for_things "${containers[@]}"
-        sum="${#containers[@]}"
+    while (("${#new[@]}" != 0 )); do
+        search "${new[@]}"
     done
 
-    echo "${sum} bags could (potentially) contain a shiny gold bag."
+    echo "${#bags[@]} bags could (potentially) contain a shiny gold bag."
 }
 
 main() {
