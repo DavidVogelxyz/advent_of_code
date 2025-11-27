@@ -2,7 +2,7 @@
 
 INPUT_FILE="../inputs/d03.txt"
 
-move() {
+move_santa() {
     local c="$1"
 
     case "$c" in
@@ -29,7 +29,7 @@ part_one() {
         for ((i=0; i < count; i++)); do
             local c="${line:i:1}"
 
-            move "$c"
+            move_santa "$c"
 
             if [[ "${visited["$x, $y"]}" == 1 ]]; then
                 continue
@@ -43,9 +43,66 @@ part_one() {
     done < "$INPUT_FILE"
 }
 
+move_robo() {
+    local c="$1"
+
+    case "$c" in
+        "^")
+            s="$((s+1))";;
+        "v")
+            s="$((s-1))";;
+        ">")
+            r="$((r+1))";;
+        "<")
+            r="$((r-1))";;
+    esac
+}
+
+part_two() {
+    while read -r line; do
+        local count="${#line}"
+        local x=0
+        local y=0
+        local r=0
+        local s=0
+        declare -A visited
+        visited["$x, $y"]=1
+        local sum=1
+
+        for ((i=0; i < count; i++)); do
+            local c="${line:i:1}"
+
+            if ((i % 2 == 0)); then
+                move_santa "$c"
+
+                if [[ "${visited["$x, $y"]}" == 1 ]]; then
+                    continue
+                else
+                    visited["$x, $y"]=1
+                    sum="$((sum + 1))"
+                fi
+            else
+                move_robo "$c"
+
+                if [[ "${visited["$r, $s"]}" == 1 ]]; then
+                    continue
+                else
+                    visited["$r, $s"]=1
+                    sum="$((sum + 1))"
+                fi
+            fi
+        done
+
+        echo "${sum} houses receive at least 1 present."
+    done < "$INPUT_FILE"
+}
+
 main() {
     # PART ONE
-    part_one
+    #part_one
+
+    # PART TWO
+    part_two
 }
 
 main
