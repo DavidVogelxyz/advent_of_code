@@ -18,13 +18,14 @@ move_santa() {
 }
 
 part_one() {
+    local x=0
+    local y=0
+    declare -A visited
+    visited["$x, $y"]=1
+    local sum=1
+
     while read -r line; do
         local count="${#line}"
-        local x=0
-        local y=0
-        declare -A visited
-        visited["$x, $y"]=1
-        local sum=1
 
         for ((i=0; i < count; i++)); do
             local c="${line:i:1}"
@@ -38,9 +39,9 @@ part_one() {
                 sum="$((sum + 1))"
             fi
         done
-
-        echo "${sum} houses receive at least 1 present."
     done < "$INPUT_FILE"
+
+    echo "${sum} houses receive at least 1 present."
 }
 
 move_robo() {
@@ -59,15 +60,16 @@ move_robo() {
 }
 
 part_two() {
+    local x=0
+    local y=0
+    local r=0
+    local s=0
+    declare -A visited
+    visited["$x, $y"]=1
+    local sum=1
+
     while read -r line; do
         local count="${#line}"
-        local x=0
-        local y=0
-        local r=0
-        local s=0
-        declare -A visited
-        visited["$x, $y"]=1
-        local sum=1
 
         for ((i=0; i < count; i++)); do
             local c="${line:i:1}"
@@ -92,9 +94,9 @@ part_two() {
                 fi
             fi
         done
-
-        echo "${sum} houses receive at least 1 present."
     done < "$INPUT_FILE"
+
+    echo "${sum} houses receive at least 1 present."
 }
 
 main() {
