@@ -32,12 +32,12 @@ parse_line_part_one() {
 }
 
 check_passport() {
-    while read -r item; do
+    for item in "${must_contain[@]}"; do
         if ! [[ "${1}" =~ "$item" ]]; then
             valid=false
             break
         fi
-    done < <(printf "%s\n" "${must_contain[@]}")
+    done
 
     if [[ "$valid" == true ]]; then
         sum=$((sum + 1))

@@ -88,7 +88,7 @@ bubble_sort() {
 find_missing() {
     local last=0
 
-    while read -r num; do
+    for num in "${@}"; do
         if ((last == 0)) || (( (last + 1) == num )) ; then
             last="$num"
         else
@@ -96,7 +96,7 @@ find_missing() {
             echo "$result"
             return
         fi
-    done < <(printf "%s\n" "$@")
+    done
 }
 
 day_five_part_two() {
