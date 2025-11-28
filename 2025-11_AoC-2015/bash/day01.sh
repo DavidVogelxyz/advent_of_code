@@ -39,7 +39,7 @@ part_two() {
 
             if ((sum == -1)); then
                 # According to AoC, if the first character was a `)`, that would be position `1`, not `0`.
-                echo "The position of the first character that causes Santa to arrive at floor \`-1\` is position $((i + 1))."
+                echo "Santa arrives on floor \`-1\` at position $((i + 1))."
                 break
             fi
         done
