@@ -4,13 +4,13 @@ def part_one(arr):
     for line in arr:
         line = line.split("x")
 
-        l = int(line[0])
-        w = int(line[1])
-        h = int(line[2])
+        length = int(line[0])
+        width = int(line[1])
+        height = int(line[2])
 
-        lw = l * w
-        wh = w * h
-        hl = h * l
+        lw = length * width
+        wh = width * height
+        hl = height * length
 
         area = 2 * (lw + wh + hl)
 
@@ -32,21 +32,21 @@ def part_two(arr):
     for line in arr:
         line = line.split("x")
 
-        l = int(line[0])
-        w = int(line[1])
-        h = int(line[2])
+        length = int(line[0])
+        width = int(line[1])
+        height = int(line[2])
 
         wrap = 0
         bow = 0
 
-        if l > w and l > h:
-            wrap = 2 * (w + h)
-        elif w > h:
-            wrap = 2 * (l + h)
+        if length > width and length > height:
+            wrap = 2 * (width + height)
+        elif width > height:
+            wrap = 2 * (length + height)
         else:
-            wrap = 2 * (l + w)
+            wrap = 2 * (length + width)
 
-        bow = l * w * h
+        bow = length * width * height
 
         sum = sum + wrap + bow
 

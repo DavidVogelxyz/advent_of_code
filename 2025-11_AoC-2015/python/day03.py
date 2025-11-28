@@ -15,14 +15,14 @@ def move(x, y, c):
 def part_one(arr):
     x = 0
     y = 0
-    coords = x,y
+    coords = x, y
     visited = []
     visited.append(coords)
 
     for line in arr:
         for c in line:
             x, y = move(x, y, c)
-            coords = x,y
+            coords = x, y
 
             if visited.__contains__(coords):
                 continue
@@ -37,7 +37,7 @@ def part_two(arr):
     y = 0
     r = 0
     s = 0
-    coords = x,y
+    coords = x, y
     visited = []
     visited.append(coords)
     count = 0
@@ -46,10 +46,10 @@ def part_two(arr):
         for c in line:
             if count % 2 == 0:
                 x, y = move(x, y, c)
-                coords = x,y
+                coords = x, y
             else:
                 r, s = move(r, s, c)
-                coords = r,s
+                coords = r, s
 
             count += 1
 

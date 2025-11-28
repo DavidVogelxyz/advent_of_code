@@ -15,6 +15,7 @@ def part_two(arr):
     count = 0
 
     for c in arr:
+        # According to AoC, `count` should start at `1`, not `0`.
         count += 1
 
         if c == "(":
@@ -23,8 +24,7 @@ def part_two(arr):
             sum = sum - 1
 
         if sum == -1:
-            # According to AoC, if the first character was a `)`, that would be position `1`, not `0`.
-            print (f"The position of the first character that causes Santa to arrive at floor `-1` is position {count}.")
+            print(f"Santa arrives on floor `-1` at position {count}.")
             return
 
 
