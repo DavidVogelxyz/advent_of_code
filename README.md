@@ -13,3 +13,4 @@ This repo contains all of my different solves for Advent of Code (AoC).
 | [2025 October  - 2020 - Python](2025-10_AoC-2020/) |
 | [2025 November - 2015 - Bash](2025-11_AoC-2015/)   |
 | [2025 November - 2015 - Python](2025-11_AoC-2015/) |
+| [2025 November - 2023 - Bash](2025-11_AoC-2023/)   |
