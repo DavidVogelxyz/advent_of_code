@@ -36,7 +36,7 @@ def check_passport(passport, sum):
     return sum
 
 
-def day_four_part_one(arr):
+def part_one(arr):
     passport = []
     pass_num = int(1)
     sum = 0
@@ -52,7 +52,7 @@ def day_four_part_one(arr):
     # Check the last passport
     sum = check_passport(passport, sum)
 
-    print(f"There are {sum} valid passports.")
+    print(f"2020 D04 P1 = {sum}")
 
 
 def parse_line_part_two(line, passport, valid):
@@ -154,7 +154,7 @@ def parse_line_part_two(line, passport, valid):
     return passport, valid
 
 
-def day_four_part_two(arr):
+def part_two(arr):
     passport = []
     pass_num = int(1)
     sum = 0
@@ -172,7 +172,7 @@ def day_four_part_two(arr):
     # Check the last passport
     sum = check_passport(passport, sum)
 
-    print(f"There are {sum} valid passports.")
+    print(f"2020 D04 P2 = {sum}")
 
 
 def main():
@@ -180,10 +180,10 @@ def main():
         arr = [line.strip() for line in file]
 
     # PART ONE
-    #day_four_part_one(arr)
+    part_one(arr)
 
     # PART TWO
-    day_four_part_two(arr)
+    part_two(arr)
 
 
 if __name__ == "__main__":

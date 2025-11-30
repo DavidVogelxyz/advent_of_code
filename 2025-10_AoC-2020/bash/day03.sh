@@ -28,13 +28,13 @@ travel() {
     echo "$sum"
 }
 
-day_three_part_one() {
+part_one() {
     sum="$(r=3 d=1 travel)"
 
-    echo "$sum trees were hit while travelling."
+    echo "2020 D03 P1 = $sum"
 }
 
-day_three_part_two() {
+part_two() {
     n1="$(r=1 d=1 travel)"
     n2="$(r=3 d=1 travel)"
     n3="$(r=5 d=1 travel)"
@@ -43,17 +43,17 @@ day_three_part_two() {
 
     product="$(( n1 * n2 * n3 * n4 * n5 ))"
 
-    echo "Product of sums = $product"
+    echo "2020 D03 P2 = $product"
 }
 
 main() {
     readarray -t arr < "$INPUT_FILE"
 
     # PART ONE
-    #day_three_part_one
+    part_one
 
     # PART TWO
-    day_three_part_two
+    part_two
 }
 
 main

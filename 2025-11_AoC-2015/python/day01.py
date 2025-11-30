@@ -7,7 +7,7 @@ def part_one(arr):
         elif c == ")":
             sum = sum - 1
 
-    print(f"Santa will arrive on floor #{sum}.")
+    print(f"2015 D01 P1 = {sum}")
 
 
 def part_two(arr):
@@ -24,7 +24,7 @@ def part_two(arr):
             sum = sum - 1
 
         if sum == -1:
-            print(f"Santa arrives on floor `-1` at position {count}.")
+            print(f"2015 D01 P2 = {count}")
             return
 
 

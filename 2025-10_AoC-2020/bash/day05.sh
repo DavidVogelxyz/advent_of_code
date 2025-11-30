@@ -37,7 +37,7 @@ binary_search() {
     echo "$result"
 }
 
-day_five_part_one() {
+part_one() {
     local highest=0
 
     while read -r bsp; do
@@ -54,7 +54,7 @@ day_five_part_one() {
         fi
     done < "$INPUT_FILE"
 
-    echo "The highest seat ID is ${highest}."
+    echo "2020 D05 P1 = $highest"
 }
 
 bubble_sort() {
@@ -99,7 +99,7 @@ find_missing() {
     done
 }
 
-day_five_part_two() {
+part_two() {
     local seats=()
 
     while read -r bsp; do
@@ -117,15 +117,15 @@ day_five_part_two() {
     sorted=($(bubble_sort "${seats[@]}"))
     result=$(find_missing "${sorted[@]}")
 
-    echo "The seat ID is ${result}."
+    echo "2020 D05 P2 = $result"
 }
 
 main() {
     # PART ONE
-    #day_five_part_one
+    part_one
 
     # PART TWO
-    day_five_part_two
+    part_two
 }
 
 main

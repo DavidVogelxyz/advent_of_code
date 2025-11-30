@@ -2,7 +2,7 @@
 
 INPUT_FILE="../inputs/d01.txt"
 
-add_array_part_one() {
+part_one() {
     local total="${#arr[@]}"
 
     for ((i = 0; i < ((total - 1)); i++)); do
@@ -15,14 +15,10 @@ add_array_part_one() {
         done
     done
 
-    if ! [[ "$l" ]]; then
-        echo "Something went wrong... 😭😭😭" && exit 1
-    else
-        echo "The product of $l and $r = $((l * r))"
-    fi
+    echo "2020 D01 P1 = $((l * r))"
 }
 
-add_array_part_two() {
+part_two() {
     local total="${#arr[@]}"
 
     for ((i = 0; i < ((total - 2)); i++)); do
@@ -38,21 +34,17 @@ add_array_part_two() {
         done
     done
 
-    if ! [[ "$l" ]]; then
-        echo "Something went wrong... 😭😭😭" && exit 1
-    else
-        echo "The product of ${l}, ${m}, and ${r} = $((l * m * r))"
-    fi
+    echo "2020 D01 P2 = $((l * m * r))"
 }
 
 main() {
     readarray -t arr < "$INPUT_FILE"
 
     # PART ONE
-    #add_array_part_one
+    part_one
 
     # PART TWO
-    add_array_part_two
+    part_two
 }
 
 main

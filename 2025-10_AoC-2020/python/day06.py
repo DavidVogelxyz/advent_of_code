@@ -1,4 +1,4 @@
-def day_six_part_one(arr):
+def part_one(arr):
     sum = 0
 
     for group in arr:
@@ -6,10 +6,10 @@ def day_six_part_one(arr):
             if letter in group:
                 sum = sum + 1
 
-    print(f"PART ONE: the sum is {sum}.")
+    print(f"2020 D06 P1 = {sum}")
 
 
-def day_six_part_two(arr):
+def part_two(arr):
     sum = 0
 
     for group in arr:
@@ -21,7 +21,7 @@ def day_six_part_two(arr):
 
         sum = sum + int(len(check))
 
-    print(f"PART TWO: the sum is {sum}.")
+    print(f"2020 D06 P2 = {sum}")
 
 
 def main():
@@ -29,10 +29,10 @@ def main():
         arr = file.read().strip("\n").split("\n\n")
 
     # PART ONE
-    #day_six_part_one(arr)
+    part_one(arr)
 
     # PART TWO
-    day_six_part_two(arr)
+    part_two(arr)
 
 
 if __name__ == "__main__":

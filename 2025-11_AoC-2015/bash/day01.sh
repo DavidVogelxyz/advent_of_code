@@ -19,7 +19,7 @@ part_one() {
         done
     done < "$INPUT_FILE"
 
-    echo "Santa will arrive on floor #${sum}."
+    echo "2015 D01 P1 = $sum"
 }
 
 part_two() {
@@ -39,7 +39,7 @@ part_two() {
 
             if ((sum == -1)); then
                 # According to AoC, if the first character was a `)`, that would be position `1`, not `0`.
-                echo "Santa arrives on floor \`-1\` at position $((i + 1))."
+                echo "2015 D01 P2 = $((i + 1))"
                 break
             fi
         done
@@ -48,7 +48,7 @@ part_two() {
 
 main() {
     # PART ONE
-    #part_one
+    part_one
 
     # PART TWO
     part_two

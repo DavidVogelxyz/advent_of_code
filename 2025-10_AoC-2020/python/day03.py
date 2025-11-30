@@ -35,13 +35,13 @@ def travel(arr, right, down):
     return sum
 
 
-def day_three_part_one(arr):
+def part_one(arr):
     sum = travel(arr, 3, 1)
 
-    return sum
+    print(f"2020 D03 P1 = {sum}")
 
 
-def day_three_part_two(arr):
+def part_two(arr):
     n1 = travel(arr, 1, 1)
     n2 = travel(arr, 3, 1)
     n3 = travel(arr, 5, 1)
@@ -50,7 +50,7 @@ def day_three_part_two(arr):
 
     product = n1 * n2 * n3 * n4 * n5
 
-    return product
+    print(f"2020 D03 P2 = {product}")
 
 
 def main():
@@ -58,12 +58,10 @@ def main():
         arr = [line.strip() for line in file]
 
     # PART ONE
-    #sum = day_three_part_one(arr)
-    #print(f"{sum} trees were hit while travelling.")
+    part_one(arr)
 
     # PART TWO
-    product = day_three_part_two(arr)
-    print(f"Product of sums = {product}")
+    part_two(arr)
 
 
 if __name__ == "__main__":

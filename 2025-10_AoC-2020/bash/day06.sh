@@ -16,7 +16,7 @@ parse_line_part_one() {
     done
 }
 
-day_six_part_one() {
+part_one() {
     local group=()
     local sum=0
 
@@ -34,7 +34,7 @@ day_six_part_one() {
     local count="${#group[@]}"
     sum="$((sum + count))"
 
-    echo "The sum is ${sum}."
+    echo "2020 D06 P1 = $sum"
 }
 
 parse_line_part_two() {
@@ -68,7 +68,7 @@ parse_line_part_two() {
     fi
 }
 
-day_six_part_two() {
+part_two() {
     local group=()
     local person=0
     local sum=0
@@ -88,15 +88,15 @@ day_six_part_two() {
     local count="${#group[@]}"
     sum="$((sum + count))"
 
-    echo "The sum is ${sum}."
+    echo "2020 D06 P2 = $sum"
 }
 
 main() {
     # PART ONE
-    #day_six_part_one
+    part_one
 
     # PART TWO
-    day_six_part_two
+    part_two
 }
 
 main

@@ -41,7 +41,7 @@ part_one() {
         done
     done < "$INPUT_FILE"
 
-    echo "${sum} houses receive at least 1 present."
+    echo "2015 D03 P1 = $sum"
 }
 
 move_robo() {
@@ -96,12 +96,12 @@ part_two() {
         done
     done < "$INPUT_FILE"
 
-    echo "${sum} houses receive at least 1 present."
+    echo "2015 D03 P2 = $sum"
 }
 
 main() {
     # PART ONE
-    #part_one
+    part_one
 
     # PART TWO
     part_two

@@ -29,7 +29,7 @@ def part_one(arr):
             else:
                 visited.append(coords)
 
-    print(f"{len(visited)} houses receive at least 1 present.")
+    print(f"2015 D03 P1 = {len(visited)}")
 
 
 def part_two(arr):
@@ -58,7 +58,7 @@ def part_two(arr):
             else:
                 visited.append(coords)
 
-    print(f"{len(visited)} houses receive at least 1 present.")
+    print(f"2015 D03 P2 = {len(visited)}")
 
 
 def main():
