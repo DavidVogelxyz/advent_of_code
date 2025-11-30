@@ -44,7 +44,7 @@ check_passport() {
     fi
 }
 
-day_four_part_one() {
+part_one() {
     local passport=()
     local pass_num=1
     local sum=0
@@ -64,7 +64,7 @@ day_four_part_one() {
     # Check the last passport
     check_passport "${passport[*]}"
 
-    echo "There are $sum valid passports!"
+    echo "2020 D04 P1 = $sum"
 }
 
 parse_line_part_two() {
@@ -166,7 +166,7 @@ parse_line_part_two() {
     done
 }
 
-day_four_part_two() {
+part_two() {
     local passport=()
     local pass_num=1
     local sum=0
@@ -186,15 +186,15 @@ day_four_part_two() {
     # Check the last passport
     check_passport "${passport[*]}"
 
-    echo "There are $sum valid passports!"
+    echo "2020 D04 P2 = $sum"
 }
 
 main() {
     # PART ONE
-    #day_four_part_one
+    part_one
 
     # PART TWO
-    day_four_part_two
+    part_two
 }
 
 main

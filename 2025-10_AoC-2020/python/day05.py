@@ -27,22 +27,22 @@ def binary_search(string):
     return result
 
 
-def day_five_part_one(arr):
+def part_one(arr):
     highest = 0
 
     for bsp in arr:
         row = bsp[0:7]
         col = bsp[7:10]
 
-        row = binary_search(row)
-        col = binary_search(col)
+        row = int(binary_search(row))
+        col = int(binary_search(col))
 
         seat_ID = 8 * row + col
 
         if highest < seat_ID:
             highest = seat_ID
 
-    print(f"The highest seat ID is {highest}.")
+    print(f"2020 D05 P1 = {highest}")
 
 
 def bubble_sort(arr):
@@ -90,15 +90,15 @@ def find_missing(arr):
             return result
 
 
-def day_five_part_two(arr):
+def part_two(arr):
     seats = []
 
     for bsp in arr:
         row = bsp[0:7]
         col = bsp[7:10]
 
-        row = binary_search(row)
-        col = binary_search(col)
+        row = int(binary_search(row))
+        col = int(binary_search(col))
 
         seat_ID = 8 * row + col
 
@@ -107,7 +107,7 @@ def day_five_part_two(arr):
     sorted = bubble_sort(seats)
     result = find_missing(sorted)
 
-    print(f"The seat ID is {result}.")
+    print(f"2020 D05 P2 = {result}")
 
 
 def main():
@@ -115,10 +115,10 @@ def main():
         arr = [line.strip() for line in file]
 
     # PART ONE
-    #day_five_part_one(arr)
+    part_one(arr)
 
     # PART TWO
-    day_five_part_two(arr)
+    part_two(arr)
 
 
 if __name__ == "__main__":

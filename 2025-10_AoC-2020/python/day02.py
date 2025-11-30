@@ -1,4 +1,4 @@
-def day_two_part_one(arr):
+def part_one(arr):
     sum = 0
 
     for line in arr:
@@ -27,10 +27,10 @@ def day_two_part_one(arr):
         if low <= count <= high:
             sum += 1
 
-    return sum
+    print(f"2020 D02 P1 = {sum}")
 
 
-def day_two_part_two(arr):
+def part_two(arr):
     sum = 0
 
     for line in arr:
@@ -64,7 +64,7 @@ def day_two_part_two(arr):
         elif c == hi:
             sum += 1
 
-    return sum
+    print(f"2020 D02 P2 = {sum}")
 
 
 def main():
@@ -72,12 +72,10 @@ def main():
         arr = [line.strip() for line in file]
 
     # PART ONE
-    #sum = day_two_part_one(arr)
+    part_one(arr)
 
     # PART TWO
-    sum = day_two_part_two(arr)
-
-    print(f"The sum is {sum}")
+    part_two(arr)
 
 
 if __name__ == "__main__":

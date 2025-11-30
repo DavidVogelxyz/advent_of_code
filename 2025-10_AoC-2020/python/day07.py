@@ -22,7 +22,7 @@ def part_one(arr):
     while len(new) != 0:
         bags, new = search(arr, bags, new)
 
-    print(f"{len(bags)} bags could (potentially) contain a shiny gold bag.")
+    print(f"2020 D07 P1 = {len(bags)}")
 
 
 def recursive_search(arr, search_term):
@@ -52,7 +52,7 @@ def recursive_search(arr, search_term):
 def part_two(arr):
     bags_total = recursive_search(arr, "1 shiny gold")
 
-    print(f"The shiny gold bag MUST CONTAIN {bags_total - 1} bags.")
+    print(f"2020 D07 P2 = {bags_total - 1}")
 
 
 def main():

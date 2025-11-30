@@ -2,7 +2,7 @@
 
 INPUT_FILE="../inputs/d02.txt"
 
-valid_part_one() {
+part_one() {
     local sum=0
 
     while read -r range char string; do
@@ -26,10 +26,10 @@ valid_part_one() {
         fi
     done < "$INPUT_FILE"
 
-    echo "The # of valid passwords = $sum"
+    echo "2020 D02 P1 = $sum"
 }
 
-valid_part_two() {
+part_two() {
     local sum=0
 
     while read -r range char string; do
@@ -56,15 +56,15 @@ valid_part_two() {
         fi
     done < "$INPUT_FILE"
 
-    echo "The # of valid passwords = $sum"
+    echo "2020 D02 P2 = $sum"
 }
 
 main() {
     # PART ONE
-    #valid_part_one
+    part_one
 
     # PART TWO
-    valid_part_two
+    part_two
 }
 
 main

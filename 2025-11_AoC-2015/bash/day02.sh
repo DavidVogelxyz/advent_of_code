@@ -23,7 +23,7 @@ part_one() {
         sum="$((sum + area))"
     done < "$INPUT_FILE"
 
-    echo "The elves require ${sum} square feet of wrapping paper."
+    echo "2015 D02 P1 = $sum"
 }
 
 part_two() {
@@ -45,12 +45,12 @@ part_two() {
         sum="$((sum + wrap + bow))"
     done < "$INPUT_FILE"
 
-    echo "The elves require ${sum} feet of ribbon."
+    echo "2015 D02 P2 = $sum"
 }
 
 main() {
     # PART ONE
-    #part_one
+    part_one
 
     # PART TWO
     part_two

@@ -29,7 +29,7 @@ part_one() {
         search "${new[@]}"
     done
 
-    echo "${#bags[@]} bags could (potentially) contain a shiny gold bag."
+    echo "2020 D07 P1 = ${#bags[@]}"
 }
 
 recursive_search() {
@@ -55,12 +55,12 @@ recursive_search() {
 part_two() {
     local bags_total="$(recursive_search "1 shiny gold")"
 
-    echo "The shiny gold bag MUST CONTAIN $((bags_total - 1)) bags."
+    echo "2020 D07 P2 = $((bags_total - 1))"
 }
 
 main() {
     # PART ONE
-    #part_one
+    part_one
 
     # PART TWO
     part_two

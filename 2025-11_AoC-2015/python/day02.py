@@ -23,7 +23,7 @@ def part_one(arr):
 
         sum = sum + area
 
-    print(f"The elves require {sum} square feet of wrapping paper.")
+    print(f"2015 D02 P1 = {sum}")
 
 
 def part_two(arr):
@@ -50,7 +50,7 @@ def part_two(arr):
 
         sum = sum + wrap + bow
 
-    print(f"The elves require {sum} feet of ribbon.")
+    print(f"2015 D02 P2 = {sum}")
 
 
 def main():
