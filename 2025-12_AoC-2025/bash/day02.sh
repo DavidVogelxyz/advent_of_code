@@ -5,14 +5,15 @@ INPUT_FILE="../inputs/d02.txt"
 is_repetitive_part_one() {
     local string="$1"
     local length="${#string}"
-    local mid="$((length / 2))"
-    local left="${string:0:$mid}"
-    local right="${string:$mid}"
 
     # If `$length` is odd, return as false
     if ((length % 2 == 1)); then
         return 1
     fi
+
+    local mid="$((length / 2))"
+    local left="${string:0:$mid}"
+    local right="${string:$mid}"
 
     # Skip, if any leading zeroes
     if [[ "$right" =~ ^0 ]]; then
