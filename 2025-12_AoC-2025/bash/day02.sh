@@ -2,7 +2,7 @@
 
 INPUT_FILE="../inputs/d02.txt"
 
-is_repetitive() {
+is_repetitive_part_one() {
     local string="$1"
     local length="${#string}"
     local mid="$((length / 2))"
@@ -36,7 +36,7 @@ part_one() {
             local hi="${range##*-}"
 
             for ((i=$lo; i<=$hi; i++)); do
-                if is_repetitive "$i"; then
+                if is_repetitive_part_one "$i"; then
                     sum="$((sum + i))"
                 fi
             done
@@ -46,9 +46,49 @@ part_one() {
     echo "2025 D02 P1 = $sum"
 }
 
+is_repetitive_part_two() {
+    local string="$1"
+    local length="${#string}"
+    local mid="$((length / 2))"
+
+    for ((j=1; j<=mid; j++)); do
+        local left="${string:0:$j}"
+        local sub="${string//"${left}"/}"
+
+        if [[ "$sub" == "" ]]; then
+            return
+        fi
+    done
+
+    return 1
+}
+
+part_two() {
+    local sum=0
+
+    while read -r line; do
+        IFS="," arr=($line)
+        for range in "${arr[@]}"; do
+            local lo="${range%%-*}"
+            local hi="${range##*-}"
+
+            for ((i=$lo; i<=$hi; i++)); do
+                if is_repetitive_part_two "$i"; then
+                    sum="$((sum + i))"
+                fi
+            done
+        done
+    done < "$INPUT_FILE"
+
+    echo "2025 D02 P2 = $sum"
+}
+
 main() {
     # PART ONE
     part_one
+
+    # PART TWO
+    part_two
 }
 
 main
