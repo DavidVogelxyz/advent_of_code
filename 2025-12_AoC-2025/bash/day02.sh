@@ -14,10 +14,10 @@ is_repetitive() {
         return 1
     fi
 
-    # Remove leading zeroes
-    while [[ "$right" =~ ^0 ]]; do
-        right="${right#0}"
-    done
+    # Skip, if any leading zeroes
+    if [[ "$right" =~ ^0 ]]; then
+        return 1
+    fi
 
     if ((left == right)); then
         return
