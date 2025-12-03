@@ -70,11 +70,98 @@ part_one() {
     echo "2023 D03 P1 = $sum"
 }
 
+part_two() {
+    local rows_total="${#arr[@]}"
+    local sum=0
+    local curr_num=0
+    local adj_star_positions=()
+    declare -A stars
+    declare -A star_count
+
+    # Read through rows (vertically)
+    for ((row=0; row<rows_total; row++)); do
+        # Get the current line
+        local curr=(${arr[$row]})
+
+        # Total number of chars in row
+        local cols_total="${#curr}"
+
+        # Read through the cols (horizontally)
+        for ((col=0; col < cols_total; col++)); do
+            local char="${curr:$col:1}"
+
+            # Handle numbers
+            if [[ "$char" == [0-9] ]]; then
+                for row_offset in {-1..1}; do
+                    for col_offset in {-1..1}; do
+                        # Skip the "current character"
+                        if ((row_offset == 0)) && ((col_offset == 0)); then
+                            continue
+                        fi
+
+                        local adj_row="$((row + row_offset))"
+                        local adj_col="$((col + col_offset))"
+
+                        # Skip if `$adj_row` is off map
+                        if ((adj_row < 0)) || ((adj_row >= rows_total)); then
+                            continue
+                        fi
+
+                        # Skip if `$adj_col` is off map
+                        if ((adj_col < 0)) || ((adj_col >= cols_total)); then
+                            continue
+                        fi
+
+                        local adj_value="${arr[$adj_row]:$adj_col:1}"
+
+                        # If `$adj_value` is a "*"
+                        if [[ "$adj_value" == "*" ]]; then
+                            if ! [[ "${adj_star_positions[@]}" =~ "$adj_row, $adj_col" ]]; then
+                                adj_star_positions+=("$adj_row, $adj_col")
+                            fi
+                        fi
+                    done
+                done
+
+                curr_num="$((10 * curr_num))"
+                curr_num="$((curr_num + char))"
+
+                # If the next char is off map; or, not a number; resolve
+                if ((col + 1 >= cols_total)) || [[ "${curr:col+1:1}" != [0-9] ]]; then
+                    for coords in "${adj_star_positions[@]}"; do
+                        if ((stars["$coords"] == 0)); then
+                            stars["$coords"]="$curr_num"
+                        else
+                            stars["$coords"]="$((stars[$coords] * curr_num))"
+                        fi
+
+                        star_count["$coords"]="$((star_count[$coords] + 1))"
+                    done
+
+                    curr_num=0
+                    adj_star_positions=()
+                fi
+            fi
+        done
+    done
+
+    for key in "${!stars[@]}"; do
+        if ((star_count[$key] == 2)); then
+            sum="$((sum + stars[$key]))"
+        fi
+    done
+
+    echo "2023 D03 P2 = $sum"
+}
+
 main() {
     readarray -t arr < "$INPUT_FILE"
 
     # PART ONE
     part_one
+
+    # PART TWO
+    part_two
 }
 
 main
