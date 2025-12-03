@@ -6,34 +6,35 @@ part_one() {
     local sum=0
 
     while read -r line; do
+        local nums=()
         local count="${#line}"
         local num_largest=0
-        local num_second=0
         local pos_largest=0
         local curr_num=0
+        local next_pos=0
 
-        # Get the largest number that's not the last number
-        for ((i=0; i < count - 1; i++)); do
-            curr_num="${line:$i:1}"
+        # To get the 2 numbers, leave 1 in reserve
+        for ((i=1; i >= 0; i--)); do
+            for ((j=$next_pos; j < count - i; j++)); do
+                curr_num="${line:$j:1}"
 
-            if ((num_largest < curr_num)); then
-                num_largest="$curr_num"
-                pos_largest="$i"
-            fi
+                if ((num_largest < curr_num)); then
+                    num_largest="$curr_num"
+                    pos_largest="$j"
+                fi
+            done
+
+            nums+=("$num_largest")
+            num_largest=0
+            next_pos="$((pos_largest + 1))"
         done
 
-        local next_pos="$((pos_largest + 1))"
+        local jolt=""
 
-        # Get the second largest number to the right of `$num_largest`
-        for ((i="$next_pos"; i < count; i++)); do
-            curr_num="${line:$i:1}"
-
-            if ((num_second < curr_num)); then
-                num_second="$curr_num"
-            fi
+        for num in "${nums[@]}"; do
+            jolt+="$num"
         done
 
-        local jolt="${num_largest}${num_second}"
         sum="$((sum + jolt))"
     done < "$INPUT_FILE"
 
@@ -51,6 +52,7 @@ part_two() {
         local curr_num=0
         local next_pos=0
 
+        # To get the 12 numbers, leave 11 in reserve
         for ((i=11; i >= 0; i--)); do
             for ((j=$next_pos; j < count - i; j++)); do
                 curr_num="${line:$j:1}"
