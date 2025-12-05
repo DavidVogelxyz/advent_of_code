@@ -19,6 +19,8 @@ part_one() {
 
         line="${line##*: }"
 
+        local prev_word=""
+
         for word in $line; do
             case "$word" in
                 "red"*)
@@ -62,6 +64,8 @@ part_two() {
         game_id="${game_id##* }"
 
         line="${line##*: }"
+
+        local prev_word=""
 
         for word in $line; do
             case "$word" in
