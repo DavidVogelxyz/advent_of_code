@@ -28,9 +28,35 @@ part_one() {
     echo "2025 D05 P1 = $sum"
 }
 
+part_two() {
+    declare -A valids
+    local sum=0
+
+    while read -r line; do
+        if [[ "$line" =~ "-" ]]; then
+            left="${line%%-*}"
+            right="${line##*-}"
+
+            for ((i="$left"; i <= "$right"; i++)); do
+                echo "looked at $i"
+                valids[$i]=1
+            done
+        else
+            continue
+        fi
+    done < "$INPUT_FILE"
+
+    sum="${#valids[@]}"
+
+    echo "2025 D05 P2 = $sum"
+}
+
 main() {
     # PART ONE
     part_one
+
+    # PART TWO
+    part_two
 }
 
 main
