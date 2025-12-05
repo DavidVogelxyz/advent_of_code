@@ -12,10 +12,12 @@ part_one() {
             local right="${line##*-}"
             local remove=()
 
+            # Attempt to merge ranges
+            # If successful merge, add to `valids`; then, remove original ranges
+            # Loop through all current ranges in `valid`; see if any can be merged
             for ((i=0; i < "${#valids[@]}"; i++)); do
-                range="${valids[$i]}"
-                local low="${range%%-*}"
-                local high="${range##*-}"
+                local low="${valids[$i]%%-*}"
+                local high="${valids[$i]##*-}"
 
                 # Check if `$left` is between `valids`
                 if ((low <= left)) && ((left <= high)); then
