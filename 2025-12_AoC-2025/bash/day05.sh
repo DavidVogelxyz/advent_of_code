@@ -53,11 +53,11 @@ part_one() {
         else
             # Check if the number is within any valid ranges
             for ((i=0; i < "${#valids[@]}"; i++)); do
-                valid="${valids[$i]}"
-                left="${valid%%-*}"
-                right="${valid##*-}"
+                local valid="${valids[$i]}"
+                local low="${valid%%-*}"
+                local high="${valid##*-}"
 
-                if ((left <= line)) && ((line <= right)); then
+                if ((low <= line)) && ((line <= high)); then
                     sum="$((sum + 1))"
                     break
                 fi
