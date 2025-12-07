@@ -4,42 +4,61 @@ def part_one(arr):
 
     for line in arr:
         if line.__contains__("-"):
-            valids += [line]
+            ranges = line.split("-")
+            left = int(ranges[0])
+            right = int(ranges[1])
+            remove = []
+            i = 0
+
+            # Attempt to merge ranges
+            # If merged, add to `valids`; then, remove original ranges
+            # Loop through all ranges in `valid`; see if any can be merged
+            for valid in valids:
+                valid = valid.split("-")
+                low = int(valid[0])
+                high = int(valid[1])
+
+                # Check if `$left` is between `valids`
+                if low <= left and left <= high:
+                    left = low
+
+                # Check if `$right` is between `valids`
+                if low <= right and right <= high:
+                    right = high
+
+                # If either changes, add the `$i` so it can be removed
+                if left == low or right == high:
+                    remove += [i]
+
+                i += 1
+
+            # If any IDs in `remove`, unset them
+            while len(remove) > 0:
+                i = len(remove) - 1
+                del valids[remove[i]]
+                del remove[i]
+
+            # Empty the `remove` array
+            remove = []
+
+            # Once the checks complete, push the range to `valids`
+            valids += [f"{left}-{right}"]
         elif line == "":
             continue
         else:
-            line = int(line)
+            value = int(line)
 
-            for bounds in valids:
-                nums = bounds.split("-")
-                left = int(nums[0])
-                right = int(nums[1])
+            # Check if the number is within any valid ranges
+            for valid in valids:
+                valid = valid.split("-")
+                low = int(valid[0])
+                high = int(valid[1])
 
-                if left <= line and line <= right:
+                if low <= value and value <= high:
                     sum += 1
                     break
 
     print(f"2025 D05 P1 = {sum}")
-
-
-def part_two(arr):
-    valids = []
-    sum = 0
-
-    for line in arr:
-        if line.__contains__("-"):
-            nums = line.split("-")
-            left = int(nums[0])
-            right = int(nums[1])
-
-            for num in range(left, right + 1):
-                valids += [num]
-        else:
-            continue
-
-    sum = len(valids)
-
-    print(f"2025 D05 P2 = {sum}")
 
 
 def main():
@@ -48,9 +67,6 @@ def main():
 
     # PART ONE
     part_one(arr)
-
-    # PART TWO
-    part_two(arr)
 
 
 if __name__ == "__main__":
