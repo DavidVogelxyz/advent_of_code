@@ -23,12 +23,13 @@ part_one() {
             if [[ "$char" == "S" ]]; then
                 tachyon[$col]=1
             elif [[ "$char" == "^" ]]; then
-                if ((tachyon[$col] == 1 )); then
+                if ((tachyon[$col] > 0 )); then
+                    for offset in {-1,1}; do
+                        index="$((col + offset))"
+                        tachyon[$index]="$((tachyon[$index] + tachyon[$col]))"
+                    done
+
                     unset tachyon[$col]
-
-                    tachyon[$((col - 1))]=1
-                    tachyon[$((col + 1))]=1
-
                     sum="$((sum + 1))"
                 fi
             fi
