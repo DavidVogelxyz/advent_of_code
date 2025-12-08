@@ -25,6 +25,34 @@ calculate_distance() {
     echo "sqrt($sq_sum)" | bc
 }
 
+bubble_sort() {
+    local array=("$@")
+    local count="${#array[@]}"
+
+    # default for `$operated`
+    local operated=1
+
+    for ((i = 0; i<count; i++)); do
+        # set `$operated` to `0` for this loop
+        operated=0
+
+        for ((j = 0; j<(count - i - 1); j++)); do
+            if ((array[j] > array[j+1])); then
+                local temp="${array[$j]}"
+                array[$j]="${array[$j+1]}"
+                array[$j+1]="$temp"
+                operated=1
+            fi
+        done
+
+        if (( "$operated" == 0 )); then
+            break
+        fi
+    done
+
+    printf "%s\n" "${array[@]}"
+}
+
 part_one() {
     declare -A dists
     coords=()
@@ -43,15 +71,23 @@ part_one() {
         done
     done
 
-    # Print the distance and the pairs of coordinates
-    for key in "${!dists[@]}"; do
-        echo "$key = dist between ${dists[$key]}"
+    # Sort this list -- confirmed the shortest 10 are in agreement with prompt
+    sorted=($(bubble_sort "${!dists[@]}"))
+
+    # Print the first 10 "distances and pairs of coordinates"
+    for ((i=0; i < 10; i++)); do
+        local coords_one="${dists[${sorted[$i]}]%%, *}"
+        local coords_two="${dists[${sorted[$i]}]##*, }"
+
+        echo "${sorted[$i]} = dist between $coords_one and $coords_two"
     done
 
-    # Sort this list -- confirmed the shortest 10 are in agreement with prompt
     # Add to arrays the pairs that connect
-    # Write a way to merge two arrays when a new pair connects the two
-    # Take the top 3 largest circuits
+    # Write a way to merge two arrays when a new pair connects the two:
+    #   if no connections, add both coords to new array
+    #   if 1 connection, add the other coord to the same array as the conn
+    #   if 2 connections, merge the two arrays into one, and unset both orig
+    # Take the top 3 largest circuits (arrays)
     # Multiply the counts of those largest 3 circuits
 
     echo "2025 D08 P1 = $sum"
