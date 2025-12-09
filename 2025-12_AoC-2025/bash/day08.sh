@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-INPUT_FILE="../inputs/d08_test.txt"
+INPUT_FILE="../inputs/d08.txt"
 
 calculate_distance() {
     local coords_one="$1"
@@ -56,6 +56,7 @@ bubble_sort() {
 part_one() {
     declare -A dists
     coords=()
+    connections=()
 
     while IFS="," read -r line; do
         coords+=("$line")
@@ -71,24 +72,96 @@ part_one() {
         done
     done
 
+    echo "got all distances for coords"
+
     # Sort this list -- confirmed the shortest 10 are in agreement with prompt
-    sorted=($(bubble_sort "${!dists[@]}"))
+    sorted_dists=($(bubble_sort "${!dists[@]}"))
 
-    # Print the first 10 "distances and pairs of coordinates"
-    for ((i=0; i < 10; i++)); do
-        local coords_one="${dists[${sorted[$i]}]%%, *}"
-        local coords_two="${dists[${sorted[$i]}]##*, }"
-
-        echo "${sorted[$i]} = dist between $coords_one and $coords_two"
-    done
+    echo "sorted the dists"
+    #echo "doing 10 connections"
+    echo "doing 1,000 connections"
 
     # Add to arrays the pairs that connect
-    # Write a way to merge two arrays when a new pair connects the two:
-    #   if no connections, add both coords to new array
-    #   if 1 connection, add the other coord to the same array as the conn
-    #   if 2 connections, merge the two arrays into one, and unset both orig
-    # Take the top 3 largest circuits (arrays)
-    # Multiply the counts of those largest 3 circuits
+    # Only do the first 10 "distances and pairs of coordinates"
+    for ((i=0; i < 1000; i++)); do
+        local coords_one="${dists[${sorted_dists[$i]}]%%, *}"
+        local coords_two="${dists[${sorted_dists[$i]}]##*, }"
+        local add_one_to=""
+        local add_two_to=""
+
+        # Check if `$coords_one` exists as a previous connection
+        for ((j=0; j < ${#connections[@]}; j++)); do
+            if [[ "${connections[$j]}" =~ "$coords_one" ]]; then
+                add_two_to="$j"
+            fi
+        done
+
+        # Check if `$coords_two` exists as a previous connection
+        for ((j=0; j < ${#connections[@]}; j++)); do
+            if [[ "${connections[$j]}" =~ "$coords_two" ]]; then
+                add_one_to="$j"
+            fi
+        done
+
+        # if 0 connections, add both coords to new array
+        if ! [[ "$add_one_to" ]] && ! [[ "$add_two_to" ]]; then
+            local index="${#connections[@]}"
+
+            connections[$index]+=" $coords_one"
+            connections[$index]+=" $coords_two"
+        fi
+
+        # if 1 connection, add the other coord to the same array as the conn
+        if [[ "$add_one_to" ]] && ! [[ "$add_two_to" ]]; then
+            connections[$add_one_to]+=" $coords_one"
+        fi
+
+        # if 1 connection, add the other coord to the same array as the conn
+        if ! [[ "$add_one_to" ]] && [[ "$add_two_to" ]]; then
+            connections[$add_two_to]+=" $coords_two"
+        fi
+
+        # if 2 connections, and both aren't part of the same network
+        if [[ "$add_one_to" ]] && [[ "$add_two_to" ]] && ((add_one_to != add_two_to)); then
+            local index="${#connections[@]}"
+
+            # Merge the two connections into one new connection
+            connections[$index]="${connections[$add_one_to]}${connections[$add_two_to]}"
+
+            # Unset the original entries for those connections
+            unset connections[$add_one_to]
+            unset connections[$add_two_to]
+
+            # Reorder the array
+            connections=("${connections[@]}")
+        fi
+
+        if ((i != 0)) && ((i % 20 == 0)); then
+            echo "completed 20 connections, at $i"
+        fi
+    done
+
+    #echo "done with 10 connections"
+    echo "done with 1,000 connections"
+
+    local network_sizes=()
+
+    echo "adding net sizes to array"
+
+    # Add the network sizes to the `network_sizes` array
+    for ((i=0; i<"${#connections[@]}"; i++)); do
+        local network=(${connections[$i]})
+        local net_size="${#network[@]}"
+        network_sizes+=("$net_size")
+    done
+
+    echo "sorting net sizes array"
+
+    # Sort this list -- confirmed the shortest 10 are in agreement with prompt
+    sorted_net_sizes=($(bubble_sort "${network_sizes[@]}"))
+
+    # Multiply the counts of the largest 3 circuits
+    sum="$((sorted_net_sizes[-1] * sorted_net_sizes[-2] * sorted_net_sizes[-3]))"
 
     echo "2025 D08 P1 = $sum"
 }
