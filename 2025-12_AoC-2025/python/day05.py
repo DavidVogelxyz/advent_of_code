@@ -61,12 +61,83 @@ def part_one(arr):
     print(f"2025 D05 P1 = {sum}")
 
 
+def part_two(arr):
+    valids = []
+    sum = 0
+
+    for line in arr:
+        if line.__contains__("-"):
+            valids += [line]
+        else:
+            continue
+
+    j = len(valids) - 1
+
+    # Attempt to merge ranges
+    # If merged, add to `valids`; then, remove original ranges
+    # Loop through all ranges in `valid`; see if any can be merged
+    while j >= 0:
+        ranges = valids[j]
+        ranges = ranges.split("-")
+        left = int(ranges[0])
+        right = int(ranges[1])
+        remove = []
+        i = 0
+
+        for valid in valids:
+            valid = valid.split("-")
+            low = int(valid[0])
+            high = int(valid[1])
+
+            # Check if `$left` is between `valids`
+            if low < left and left <= high:
+                left = low
+
+            # Check if `$right` is between `valids`
+            if low <= right and right < high:
+                right = high
+
+            # If either changes, add the `$i` so it can be removed
+            if left == low or right == high:
+                remove += [i]
+
+            i += 1
+
+        # If any IDs in `remove`, unset them
+        while len(remove) > 0:
+            i = len(remove) - 1
+            del valids[remove[i]]
+            del remove[i]
+
+        # Empty the `remove` array
+        remove = []
+
+        # Once the checks complete, push the range to `valids`
+        valids += [f"{left}-{right}"]
+
+        j -= 1
+
+    # Loop through merged ranges to sum the diffs (inclusive)
+    for ranges in valids:
+        ranges = ranges.split("-")
+        low = int(ranges[0])
+        high = int(ranges[1])
+        diff_inclu = high - low + 1
+
+        sum += diff_inclu
+
+    print(f"2025 D05 P2 = {sum}")
+
+
 def main():
     with open("../inputs/d05.txt", "r") as file:
         arr = file.read().strip("\n").split("\n")
 
     # PART ONE
     part_one(arr)
+
+    # PART TWO
+    part_two(arr)
 
 
 if __name__ == "__main__":
