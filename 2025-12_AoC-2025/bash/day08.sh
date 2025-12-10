@@ -6,23 +6,15 @@ calculate_distance() {
     local coords_one="$1"
     local coords_two="$2"
 
-    local x_one="${coords_one%%,*}"
-    local y_one="${coords_one#*,}"
-    local y_one="${y_one%%,*}"
-    local z_one="${coords_one##*,}"
+    local x_one y_one z_one
+    local x_two y_two z_two
 
-    local x_two="${coords_two%%,*}"
-    local y_two="${coords_two#*,}"
-    local y_two="${y_two%%,*}"
-    local z_two="${coords_two##*,}"
+    IFS="," read -r x_one y_one z_one <<< "$coords_one"
+    IFS="," read -r x_two y_two z_two <<< "$coords_two"
 
-    local sq_x="$(((x_one - x_two) ** 2))"
-    local sq_y="$(((y_one - y_two) ** 2))"
-    local sq_z="$(((z_one - z_two) ** 2))"
+    local sq_sum="$(((x_one - x_two) ** 2 + (y_one - y_two) ** 2 + (z_one - z_two) ** 2))"
 
-    local sq_sum="$((sq_x + sq_y + sq_z))"
-
-    echo "sqrt($sq_sum)" | bc
+    echo "$sq_sum"
 }
 
 bubble_sort() {
@@ -68,13 +60,18 @@ part_one() {
             local a="${coords[$i]}"
             local b="${coords[$j]}"
             local dist="$(calculate_distance "$a" "$b")"
-            dists[$dist]="${a}, ${b}"
+            dists[$dist]="${a} ${b}"
         done
+
+        if ((i != 0)) && ((i % 20 == 0)); then
+            echo "completed 20 distances, at $i"
+        fi
     done
 
     echo "got all distances for coords"
+    echo "now, sorting the dists"
 
-    # Sort this list -- confirmed the shortest 10 are in agreement with prompt
+    # Sort the distances
     sorted_dists=($(bubble_sort "${!dists[@]}"))
 
     echo "sorted the dists"
@@ -84,8 +81,8 @@ part_one() {
     # Add to arrays the pairs that connect
     # Only do the first 10 "distances and pairs of coordinates"
     for ((i=0; i < 1000; i++)); do
-        local coords_one="${dists[${sorted_dists[$i]}]%%, *}"
-        local coords_two="${dists[${sorted_dists[$i]}]##*, }"
+        local coords_one="${dists[${sorted_dists[$i]}]%% *}"
+        local coords_two="${dists[${sorted_dists[$i]}]##* }"
         local add_one_to=""
         local add_two_to=""
 
@@ -157,8 +154,10 @@ part_one() {
 
     echo "sorting net sizes array"
 
-    # Sort this list -- confirmed the shortest 10 are in agreement with prompt
+    # Sort the network sizes
     sorted_net_sizes=($(bubble_sort "${network_sizes[@]}"))
+
+    echo "sorted the net sizes array"
 
     # Multiply the counts of the largest 3 circuits
     sum="$((sorted_net_sizes[-1] * sorted_net_sizes[-2] * sorted_net_sizes[-3]))"
