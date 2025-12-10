@@ -165,9 +165,92 @@ part_one() {
     echo "2025 D08 P1 = $sum"
 }
 
+part_two() {
+    declare -A dists
+    sorted_dists=()
+    connections=()
+    local sum=0
+
+    while read -r dist coords_one coords_two; do
+        dists[$dist]="$coords_one $coords_two"
+        sorted_dists+=("$dist")
+    done < "day08_sorted-dists.txt"
+
+    # Add to arrays the pairs that connect
+    for ((i=0; i < 500000; i++)); do
+        local coords_one="${dists[${sorted_dists[$i]}]%% *}"
+        local coords_two="${dists[${sorted_dists[$i]}]##* }"
+        local add_one_to=""
+        local add_two_to=""
+
+        # Check if `$coords_one` exists as a previous connection
+        for ((j=0; j < ${#connections[@]}; j++)); do
+            if [[ "${connections[$j]}" =~ "$coords_one" ]]; then
+                add_two_to="$j"
+            fi
+        done
+
+        # Check if `$coords_two` exists as a previous connection
+        for ((j=0; j < ${#connections[@]}; j++)); do
+            if [[ "${connections[$j]}" =~ "$coords_two" ]]; then
+                add_one_to="$j"
+            fi
+        done
+
+        # if 0 connections, add both coords to new array
+        if ! [[ "$add_one_to" ]] && ! [[ "$add_two_to" ]]; then
+            local index="${#connections[@]}"
+
+            connections[$index]+=" $coords_one"
+            connections[$index]+=" $coords_two"
+        fi
+
+        # if 1 connection, add the other coord to the same array as the conn
+        if [[ "$add_one_to" ]] && ! [[ "$add_two_to" ]]; then
+            connections[$add_one_to]+=" $coords_one"
+        fi
+
+        # if 1 connection, add the other coord to the same array as the conn
+        if ! [[ "$add_one_to" ]] && [[ "$add_two_to" ]]; then
+            connections[$add_two_to]+=" $coords_two"
+        fi
+
+        # if 2 connections, and both aren't part of the same network
+        if [[ "$add_one_to" ]] && [[ "$add_two_to" ]] && ((add_one_to != add_two_to)); then
+            local index="${#connections[@]}"
+
+            # Merge the two connections into one new connection
+            connections[$index]="${connections[$add_one_to]}${connections[$add_two_to]}"
+
+            # Unset the original entries for those connections
+            unset connections[$add_one_to]
+            unset connections[$add_two_to]
+
+            # Reorder the array
+            connections=("${connections[@]}")
+        fi
+
+        local network=(${connections[0]})
+        local net_size="${#network[@]}"
+
+        if (( ${#connections[@]} == 1 )) && (( net_size > 999 )); then
+            IFS="," read -r x_one y_one z_one <<< "$coords_one"
+            IFS="," read -r x_two y_two z_two <<< "$coords_two"
+
+            sum="$((x_one * x_two))"
+            break
+        fi
+    done
+
+    echo "2025 D08 P2 = $sum"
+}
+
 main() {
     # PART ONE
-    part_one
+    #part_one
+
+    # PART TWO
+    part_two
 }
 
 main
